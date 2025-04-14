@@ -42,7 +42,7 @@ export const services: Service[] = [
     name: "Plumbing",
     description: "Expert plumbing services for repairs and installations",
     image: "https://images.unsplash.com/photo-1585704123905-c3cb1b56912f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    iconName: "wrench",
+    iconName: "pipe",
     slug: "plumbing",
     popular: true
   },

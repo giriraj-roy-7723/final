@@ -13,6 +13,9 @@ const ServiceCategory = () => {
   const { slug } = useParams<{ slug: string }>();
   const service = getServiceBySlug(slug || "");
   const providers = service ? getProvidersByServiceId(service.id) : [];
+  
+  // Add a fallback image for services
+  const fallbackImage = "https://images.unsplash.com/photo-1482938289607-e9573fc25ebb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80";
 
   if (!service) {
     return (
@@ -40,6 +43,10 @@ const ServiceCategory = () => {
             src={service.image} 
             alt={service.name}
             className="w-full h-full object-cover"
+            onError={(e) => {
+              // If the image fails to load, replace with fallback
+              e.currentTarget.src = fallbackImage;
+            }}
           />
           <div className="absolute inset-0 bg-black/40"></div>
           <div className="absolute inset-0 flex items-center">
