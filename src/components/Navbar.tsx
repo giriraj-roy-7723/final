@@ -1,11 +1,14 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import AuthButton from './AuthButton';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const location = useLocation();
+  const isProvider = location.pathname === "/provider-auth" || localStorage.getItem("userType") === "provider";
 
   return (
     <nav className="bg-white shadow-sm py-4">
@@ -25,8 +28,7 @@ const Navbar = () => {
           </div>
           
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">Login</Button>
-            <Button className="bg-primary text-white hover:bg-primary/90">Join as Pro</Button>
+            <AuthButton userType={isProvider ? "provider" : "client"} />
           </div>
           
           <div className="md:hidden flex items-center">
@@ -48,8 +50,7 @@ const Navbar = () => {
               <Link to="#" className="text-gray-700 hover:text-primary transition-colors py-2">How it Works</Link>
               <Link to="#" className="text-gray-700 hover:text-primary transition-colors py-2">About Us</Link>
               <div className="flex flex-col space-y-2 pt-2">
-                <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">Login</Button>
-                <Button className="bg-primary text-white hover:bg-primary/90">Join as Pro</Button>
+                <AuthButton userType={isProvider ? "provider" : "client"} />
               </div>
             </div>
           </div>
