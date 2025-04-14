@@ -20,7 +20,7 @@ const Hero = () => {
                 Book a Service <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
-            <Link to="#">
+            <Link to="/provider-auth">
               <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white px-8 py-6 text-lg rounded-md w-full">
                 Become a Provider
               </Button>
