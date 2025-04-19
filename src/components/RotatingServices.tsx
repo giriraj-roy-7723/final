@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { services } from "@/data/services";
-import { ArrowRight, Home, Utensils, Car, Wrench, Pipe, Hammer, BadgeAlert, WashingMachine } from "lucide-react";
+import { ArrowRight, Home, Utensils, Car, Wrench, BadgeAlert, Hammer, WashingMachine, Sprout } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -24,7 +24,7 @@ const RotatingServices = () => {
       case "utensils": return <Utensils className="w-5 h-5" />;
       case "car": return <Car className="w-5 h-5" />;
       case "wrench": return <Wrench className="w-5 h-5" />;
-      case "pipe": return <Pipe className="w-5 h-5" />;
+      case "pipe": return <Sprout className="w-5 h-5" />; // Replaced Pipe with Sprout
       case "hammer": return <Hammer className="w-5 h-5" />;
       case "washing-machine": return <WashingMachine className="w-5 h-5" />;
       default: return <BadgeAlert className="w-5 h-5" />;
