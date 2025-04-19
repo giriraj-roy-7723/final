@@ -16,7 +16,7 @@ export interface Provider {
 export const providers: Provider[] = [
   {
     id: "1",
-    name: "Mary Johnson",
+    name: "Priya Sharma",
     serviceId: "1",
     rating: 4.9,
     reviewCount: 128,
@@ -25,11 +25,11 @@ export const providers: Provider[] = [
     price: "₹149/hr",
     tags: ["Deep Cleaning", "Regular Cleaning", "Move-out Cleaning"],
     availability: "Mon-Fri, 8 AM - 5 PM",
-    slug: "mary-johnson"
+    slug: "priya-sharma"
   },
   {
     id: "2",
-    name: "James Wilson",
+    name: "Rajesh Kumar",
     serviceId: "1",
     rating: 4.7,
     reviewCount: 95,
@@ -38,11 +38,11 @@ export const providers: Provider[] = [
     price: "₹179/hr",
     tags: ["Eco-Friendly", "Pet-Friendly", "Allergy-Friendly"],
     availability: "Mon-Sat, 9 AM - 6 PM",
-    slug: "james-wilson"
+    slug: "rajesh-kumar"
   },
   {
     id: "3",
-    name: "Chef Marco",
+    name: "Arun Patel",
     serviceId: "2",
     rating: 5.0,
     reviewCount: 87,
@@ -51,11 +51,11 @@ export const providers: Provider[] = [
     price: "₹199/hr",
     tags: ["International", "Meal Prep", "Dietary Specific"],
     availability: "Tue-Sun, Flexible Hours",
-    slug: "chef-marco"
+    slug: "arun-patel"
   },
   {
     id: "4",
-    name: "Sophia Chen",
+    name: "Meera Singh",
     serviceId: "2",
     rating: 4.8,
     reviewCount: 62,
@@ -64,24 +64,24 @@ export const providers: Provider[] = [
     price: "₹189/hr",
     tags: ["Family Meals", "Pastry", "Meal Planning"],
     availability: "Mon-Fri, 10 AM - 7 PM",
-    slug: "sophia-chen"
+    slug: "meera-singh"
   },
   {
     id: "5",
-    name: "Mike Thomas",
+    name: "Arjun Verma",
     serviceId: "3",
     rating: 4.6,
     reviewCount: 43,
     image: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     description: "Mobile car detailing expert using premium products for a showroom finish.",
-    price: "₹199 per service",
+    price: "₹199/hr",
     tags: ["Detailing", "Waxing", "Interior"],
     availability: "Wed-Sun, 8 AM - 6 PM",
-    slug: "mike-thomas"
+    slug: "arjun-verma"
   },
   {
     id: "6",
-    name: "Robert Garcia",
+    name: "Amit Gupta",
     serviceId: "4",
     rating: 4.9,
     reviewCount: 104,
@@ -90,11 +90,11 @@ export const providers: Provider[] = [
     price: "₹199/hr",
     tags: ["Repairs", "Installation", "Emergency"],
     availability: "Mon-Sun, 24/7 Emergency",
-    slug: "robert-garcia"
+    slug: "amit-gupta"
   },
   {
     id: "7",
-    name: "David Miller",
+    name: "Ravi Malhotra",
     serviceId: "5",
     rating: 4.8,
     reviewCount: 76,
@@ -103,11 +103,11 @@ export const providers: Provider[] = [
     price: "₹189/hr",
     tags: ["Custom Work", "Repairs", "Furniture"],
     availability: "Mon-Fri, 9 AM - 5 PM",
-    slug: "david-miller"
+    slug: "ravi-malhotra"
   },
   {
     id: "8",
-    name: "Elena Rodriguez",
+    name: "Deepika Mehta",
     serviceId: "6",
     rating: 4.9,
     reviewCount: 91,
@@ -116,7 +116,7 @@ export const providers: Provider[] = [
     price: "₹199/hr",
     tags: ["Wiring", "Smart Home", "Lighting"],
     availability: "Mon-Sat, 8 AM - 7 PM",
-    slug: "elena-rodriguez"
+    slug: "deepika-mehta"
   }
 ];
 
