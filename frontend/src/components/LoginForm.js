@@ -1,94 +1,118 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { api, setAuthToken } from '../api';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate(); // useNavigate instead of useHistory
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError('');
 
     try {
-      const { data } = await api.post('/auth/login', { email, password });
+      const response = await api.post('/auth/login', { email, password });
+      const { token, role, username } = response.data.user;
+      
+      // Save auth data
+      localStorage.setItem('token', token);
+      localStorage.setItem('userRole', role || 'user');
+      localStorage.setItem('username', username);
+      setAuthToken(token);
 
-      // Save token and set default headers
-      localStorage.setItem('token', data.token);
-      setAuthToken(data.token);
-
-      // Redirect to dashboard or home
-      navigate('/dashboard');
+      // Force a page reload to update all states
+      window.location.href = role === 'worker' ? '/worker/dashboard' : '/dashboard';
     } catch (error) {
-      setError(error.response?.data?.message || 'Login failed. Try again.');
+      console.error('Login error:', error);
+      setError(
+        error.response?.data?.message || 
+        'Login failed. Please check your credentials and try again.'
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div style={styles.container}>
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <h2>Login</h2>
+    <div className="min-h-screen pt-20 pb-12">
+      <div className="max-w-md mx-auto bg-[#1f2937]/50 backdrop-blur-xl rounded-2xl overflow-hidden border border-gray-700">
+        <div className="px-8 pt-8 pb-6">
+          <h2 className="text-3xl font-bold text-center bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent font-space">
+            Welcome Back!
+          </h2>
+          <p className="mt-2 text-center text-gray-400 font-outfit">
+            Log in to your account
+          </p>
+        </div>
 
-        {error && <p style={styles.error}>{error}</p>}
+        <form onSubmit={handleSubmit} className="px-8 pb-8 space-y-6">
+          {error && (
+            <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">
+              {error}
+            </div>
+          )}
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          style={styles.input}
-        />
+          <div className="space-y-2">
+            <label htmlFor="email" className="block text-sm font-medium text-gray-300">
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="w-full px-4 py-3 rounded-lg bg-gray-800/50 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+              placeholder="Enter your email"
+              disabled={loading}
+            />
+          </div>
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          style={styles.input}
-        />
+          <div className="space-y-2">
+            <label htmlFor="password" className="block text-sm font-medium text-gray-300">
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="w-full px-4 py-3 rounded-lg bg-gray-800/50 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+              placeholder="Enter your password"
+              disabled={loading}
+            />
+          </div>
 
-        <button type="submit" style={styles.button}>Login</button>
-      </form>
+          <button
+            type="submit"
+            disabled={loading}
+            className={`w-full py-3 px-4 rounded-lg font-medium transition-all duration-300 ${
+              loading
+                ? 'bg-gray-600 cursor-not-allowed'
+                : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:shadow-lg hover:shadow-purple-500/25'
+            }`}
+          >
+            {loading ? 'Logging in...' : 'Login'}
+          </button>
+
+          <p className="text-center text-gray-400 text-sm">
+            Don't have an account?{' '}
+            <Link 
+              to="/signup" 
+              className="text-purple-400 hover:text-purple-300 font-medium transition-colors"
+            >
+              Sign up here
+            </Link>
+          </p>
+        </form>
+      </div>
     </div>
   );
-};
-
-const styles = {
-  container: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: '80px',
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '300px',
-    gap: '10px',
-    padding: '20px',
-    border: '1px solid #ccc',
-    borderRadius: '8px',
-    backgroundColor: '#f9f9f9',
-  },
-  input: {
-    padding: '10px',
-    fontSize: '16px',
-  },
-  button: {
-    padding: '10px',
-    fontSize: '16px',
-    backgroundColor: '#007bff',
-    color: 'white',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-  },
-  error: {
-    color: 'red',
-    fontSize: '14px',
-  },
 };
 
 export default LoginForm;

@@ -1,4 +1,3 @@
-// src/api.js
 import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:5000/api';
@@ -15,5 +14,26 @@ export const setAuthToken = (token) => {
     delete api.defaults.headers.common['Authorization'];
   }
 };
+
+// Check for token on app load
+const token = localStorage.getItem('token');
+if (token) {
+  setAuthToken(token);
+}
+
+// Add a response interceptor
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Clear token and redirect to login if unauthorized
+      localStorage.removeItem('token');
+      localStorage.removeItem('userRole');
+      setAuthToken(null);
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
 
 export { api };

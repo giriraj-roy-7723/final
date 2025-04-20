@@ -1,108 +1,134 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // React Router v6
+import { Link, useNavigate } from 'react-router-dom';
 import { api } from '../api';
 
 const SignupForm = () => {
-  const [username, setUsername] = useState('');  // State for username
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+    password: '',
+  });
   const [error, setError] = useState('');
-  const navigate = useNavigate(); // Replaces useHistory in React Router v6
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError('');
 
     try {
-      const { data } = await api.post('/auth/register', { username, email, password }); // Include username in the API call
-      alert('Signup successful! You can now login.');
-      navigate('/login'); // Redirect to login page after successful signup
+      await api.post('/auth/register', formData);
+      navigate('/login');
     } catch (error) {
-      setError(error.response?.data?.message || 'Signup failed. Try again.'); // Display error message
+      setError(error.response?.data?.message || 'Registration failed. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div style={styles.container}>
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <h2>Sign Up</h2>
+    <div className="min-h-screen pt-20 pb-12">
+      <div className="max-w-md mx-auto bg-[#1f2937]/50 backdrop-blur-xl rounded-2xl overflow-hidden border border-gray-700">
+        <div className="px-8 pt-8 pb-6">
+          <h2 className="text-3xl font-bold text-center bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent font-space">
+            Create Account
+          </h2>
+          <p className="mt-2 text-center text-gray-400 font-outfit">
+            Join our service platform today
+          </p>
+        </div>
 
-        {error && <p style={styles.error}>{error}</p>} {/* Display error message */}
+        <form onSubmit={handleSubmit} className="px-8 pb-8 space-y-6">
+          {error && (
+            <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">
+              {error}
+            </div>
+          )}
 
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)} // Handle username input
-          required
-          style={styles.input}
-        />
+          <div className="space-y-2">
+            <label htmlFor="username" className="block text-sm font-medium text-gray-300">
+              Name
+            </label>
+            <input
+              id="username"
+              type="text"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 rounded-lg bg-gray-800/50 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+              placeholder="Enter your name"
+              disabled={loading}
+            />
+          </div>
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)} // Handle email input
-          required
-          style={styles.input}
-        />
+          <div className="space-y-2">
+            <label htmlFor="email" className="block text-sm font-medium text-gray-300">
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 rounded-lg bg-gray-800/50 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+              placeholder="Enter your email"
+              disabled={loading}
+            />
+          </div>
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)} // Handle password input
-          required
-          style={styles.input}
-        />
+          <div className="space-y-2">
+            <label htmlFor="password" className="block text-sm font-medium text-gray-300">
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 rounded-lg bg-gray-800/50 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+              placeholder="Create a password"
+              disabled={loading}
+            />
+          </div>
 
-        <button type="submit" style={styles.button}>Sign Up</button>
-      </form>
+          <button
+            type="submit"
+            disabled={loading}
+            className={`w-full py-3 px-4 rounded-lg font-medium transition-all duration-300 ${
+              loading
+                ? 'bg-gray-600 cursor-not-allowed'
+                : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:shadow-lg hover:shadow-purple-500/25'
+            }`}
+          >
+            {loading ? 'Creating Account...' : 'Sign Up'}
+          </button>
+
+          <p className="text-center text-gray-400 text-sm">
+            Already have an account?{' '}
+            <Link 
+              to="/login" 
+              className="text-purple-400 hover:text-purple-300 font-medium transition-colors"
+            >
+              Log in here
+            </Link>
+          </p>
+        </form>
+      </div>
     </div>
   );
-};
-
-// Styling for the form and components
-const styles = {
-  container: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: '80px',
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '300px',
-    gap: '10px',
-    padding: '20px',
-    border: '1px solid #ccc',
-    borderRadius: '8px',
-    backgroundColor: '#f9f9f9',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Added shadow for aesthetics
-  },
-  input: {
-    padding: '10px',
-    fontSize: '16px',
-    borderRadius: '4px',
-    border: '1px solid #ddd',
-    marginBottom: '10px',
-  },
-  button: {
-    padding: '10px',
-    fontSize: '16px',
-    backgroundColor: '#28a745',
-    color: 'white',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    transition: 'background-color 0.3s', // Added transition effect
-  },
-  buttonHover: {
-    backgroundColor: '#218838', // Slightly darker green on hover
-  },
-  error: {
-    color: 'red',
-    fontSize: '14px',
-  },
 };
 
 export default SignupForm;
